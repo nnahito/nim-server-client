@@ -1,16 +1,25 @@
 import net
 
-# 接続してきたクライアント情報
-var client: Socket
+# 待機サーバ情報
+var server: Socket = newSocket()
+server.bindAddr(Port(27960))
+server.listen()
+stdout.writeLine("Server: started. Waiting connection...")
 
-# 接続してきたクライアントのIPアドレス
-var address = ""
 
-# ソケットを使ってサーバの起動
-var socket = newSocket()
-socket.bindAddr(Port(27960))
-socket.listen()
+# クライアントの接続用街ソケット
+var client: Socket = new(Socket)
+# クライアントの接続を待つ
+server.accept(client)
+stdout.writeLine("Server: client connected")
 
 while true:
-    socket.acceptAddr(client, address)
-    echo("Client connected from: ", address)
+    # メッセージが送られてくるのを待つ
+    let message: string = client.recv(150)
+
+    if message == "":
+        break
+
+    stdout.writeLine("Server: received from client: ", message)
+
+server.close()
