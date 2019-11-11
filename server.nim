@@ -7,8 +7,8 @@ server.listen()
 stdout.writeLine("Server: started. Waiting connection...")
 
 
-# クライアントの接続用街ソケット
-var client: Socket = new(Socket)
+# クライアントの接続用待ちソケット
+var client: Socket = newSocket()
 # クライアントの接続を待つ
 server.accept(client)
 stdout.writeLine("Server: client connected")
